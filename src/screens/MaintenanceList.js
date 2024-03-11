@@ -13,6 +13,8 @@
 
 // const styles = StyleSheet.create({});
 
+import { API_URL } from '@env';
+
 import React, { useEffect, useState, useContext } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { AuthContext } from '../store/authContext';
@@ -26,17 +28,14 @@ function Maintainance() {
   async function fetchMaintainance() {
     const hostel = await authCtx.user.hostel;
     if (authCtx.token) {
-      const response = await fetch(
-        'http://192.168.1.7:3000/api/v1/maintainance',
-        {
-          method: 'POST',
-          headers: {
-            authorization: `Bearer ${authCtx.token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ page, hostel }),
-        }
-      );
+      const response = await fetch(API_URL + '/api/v1/maintainance', {
+        method: 'POST',
+        headers: {
+          authorization: `Bearer ${authCtx.token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ page, hostel }),
+      });
 
       if (!response.ok) {
         console.log('Error');

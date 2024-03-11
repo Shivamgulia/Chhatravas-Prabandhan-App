@@ -12,7 +12,7 @@
 // export default StudentList;
 
 // const styles = StyleSheet.create({});
-
+import { API_URL } from '@env';
 import React, { useEffect, useState, useContext } from 'react';
 import { View, Text, Button, FlatList, StyleSheet } from 'react-native';
 import { AuthContext } from '../store/authContext';
@@ -33,7 +33,7 @@ function StudentList() {
     console.log(authCtx.token);
     if (authCtx.token) {
       console.log('auth', authCtx.token);
-      const response = await fetch('http://192.168.1.7:3000/api/v1/student', {
+      const response = await fetch(API_URL + '/api/v1/student', {
         method: 'POST',
         headers: {
           authorization: `Bearer ${authCtx.token}`,

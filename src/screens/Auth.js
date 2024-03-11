@@ -1,3 +1,5 @@
+import { API_URL } from '@env';
+
 import {
   StyleSheet,
   Text,
@@ -20,9 +22,10 @@ export default function Auth({ navigation }) {
   const authCtx = useContext(AuthContext);
 
   async function login() {
+    console.log(API_URL);
     if (email.replace(' ', '') != '' && password.replace(' ', '') != '') {
       try {
-        const res = await fetch('http://192.168.1.7:3000/api/auth/login', {
+        const res = await fetch(API_URL + '/api/auth/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

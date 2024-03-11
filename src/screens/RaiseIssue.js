@@ -1,3 +1,4 @@
+import { API_URL } from '@env';
 import React, { useState, useContext, useEffect } from 'react';
 import {
   View,
@@ -14,26 +15,23 @@ import { AuthContext } from '../store/authContext';
 function RaiseIssue() {
   const authCtx = useContext(AuthContext);
 
-  const [roomNo, setRoomNo] = useState(authCtx.user.room.toString());
-  const [raiser, setRaiser] = useState(authCtx.user.name);
+  const [roomNo, setRoomNo] = useState(authCtx?.user?.room.toString());
+  const [raiser, setRaiser] = useState(authCtx?.user?.name);
   const [description, setDescription] = useState('');
   const [issue, setIssue] = useState('');
-  const [hostel, setHostel] = useState(authCtx.user.hostel);
+  const [hostel, setHostel] = useState(authCtx?.user?.hostel);
 
   async function handleSubmit() {
     if (issue.replace(' ', '') != '' && description.replace(' ', '') != '') {
       console.log(authCtx.token);
-      const res = await fetch(
-        'http://192.168.1.7:3000/api/v1/maintainance/raise',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            authorization: 'Bearer ' + authCtx.token,
-          },
-          body: JSON.stringify({ roomNo, raiser, description, issue, hostel }),
-        }
-      );
+      const res = await fetch(API_URL + '/api/v1/maintainance/raise', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: 'Bearer ' + authCtx.token,
+        },
+        body: JSON.stringify({ roomNo, raiser, description, issue, hostel }),
+      });
       const data = await res.json();
       console.log(data);
     }

@@ -1,3 +1,4 @@
+import { API_URL } from '@env';
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Text,
@@ -28,7 +29,7 @@ const EmployeeList = () => {
   async function getEmployees() {
     const hostel = authCtx.user.hostel;
     if (authCtx.token) {
-      const response = await fetch('http://192.168.1.7:3000/api/v1/employee', {
+      const response = await fetch(API_URL + '/api/v1/employee', {
         method: 'POST',
         headers: {
           authorization: `Bearer ${authCtx.token}`,
@@ -50,7 +51,7 @@ const EmployeeList = () => {
   async function addEmployee(name, job) {
     const hostel = authCtx.user.hostel;
     const token = authCtx.token;
-    const res = await fetch('http://192.168.1.7:3000/api/v1/employee/create', {
+    const res = await fetch(API_URL + '/api/v1/employee/create', {
       method: 'POST',
       headers: {
         authorization: `Bearer ${token}`,
@@ -82,7 +83,7 @@ const EmployeeList = () => {
         {
           text: 'Ok',
           onPress: async () => {
-            const res = await fetch('http://192.168.1.7:3000/api/v1/employee', {
+            const res = await fetch(API_URL + '/api/v1/employee', {
               method: 'DELETE',
               headers: {
                 authorization: `Bearer ${token}`,
@@ -110,9 +111,10 @@ const EmployeeList = () => {
     setShowModal(false);
   }
 
+  if (!authCtx.user) return <View></View>;
   return (
     <View style={styles.cont}>
-      {authCtx.user.rollno == 0 && (
+      {authCtx.user?.rollno == 0 && (
         <TouchableOpacity onPress={openModal} style={styles.addbutton}>
           <Text style={styles.buttontext}>Add New Employee</Text>
         </TouchableOpacity>
@@ -156,7 +158,7 @@ const EmployeeList = () => {
           <View style={styles.list}>
             <Text style={styles.text}>{item.name}</Text>
             <Text style={styles.text}>{item.job}</Text>
-            {authCtx.user.rollno == 0 && (
+            {authCtx.user?.rollno == 0 && (
               <TouchableOpacity
                 onPress={() => deleteEmployee(item.id)}
                 style={styles.delete}

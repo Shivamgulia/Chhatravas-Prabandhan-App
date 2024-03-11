@@ -12,7 +12,7 @@
 // export default Dashboard;
 
 // const styles = StyleSheet.create({});
-
+import { API_URL } from '@env';
 import React, { useContext, useEffect, useState } from 'react';
 import {
   View,
@@ -37,7 +37,7 @@ const NoticeBoard = () => {
 
   async function getData() {
     setLoading(true);
-    const res1 = await fetch('http://192.168.1.7:3000/api/v1/menu', {
+    const res1 = await fetch(API_URL + '/api/v1/menu', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -52,7 +52,7 @@ const NoticeBoard = () => {
       console.log(res1);
     }
 
-    const res2 = await fetch('http://192.168.1.7:3000/api/v1/notices', {
+    const res2 = await fetch(API_URL + '/api/v1/notices', {
       headers: {
         'Content-Type': 'application/json',
         authorization: 'Bearer ' + authCtx.token,
