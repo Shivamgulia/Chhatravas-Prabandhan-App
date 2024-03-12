@@ -1,14 +1,13 @@
-import { StyleSheet, Button } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from './src/store/authContext';
 
-import Auth from './src/screens/Auth';
-import Home from './src/screens/Home';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AuthStack from './src/Stacks/AuthStack';
 import UserStack from './src/Stacks/UserStack';
+import Navbar from './src/components/Navbar/Navbar';
 
 const Stack = createNativeStackNavigator();
 
@@ -39,6 +38,11 @@ export default function Main() {
       <NavigationContainer>
         {!loggedIn && <AuthStack />}
         {loggedIn && <UserStack />}
+        {loggedIn && (
+          <View style={styles.navbar}>
+            <Navbar />
+          </View>
+        )}
       </NavigationContainer>
     </>
   );
@@ -50,5 +54,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  navbar: {
+    flex: 0,
+    // paddingBottom: 30,
+    // paddingLeft: 10,
+    // paddingRight: 10,
   },
 });

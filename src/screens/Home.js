@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { AuthContext } from '../store/authContext';
+import Navbar from '../components/Navbar/Navbar';
 
 const Home = () => {
   const authCtx = useContext(AuthContext);
@@ -59,6 +60,9 @@ const Home = () => {
           }}
         />
       </View>
+      {/* <View style={styles.navbar}>
+        <Navbar />
+      </View> */}
     </View>
   );
 };
@@ -76,5 +80,10 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     padding: 5,
+  },
+  navbar: {
+    position: 'absolute',
+    bottom: 0,
+    paddingBottom: 30,
   },
 });

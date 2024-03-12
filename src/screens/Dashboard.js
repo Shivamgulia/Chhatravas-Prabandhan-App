@@ -37,32 +37,38 @@ const NoticeBoard = () => {
 
   async function getData() {
     setLoading(true);
-    const res1 = await fetch(API_URL + '/api/v1/menu', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: 'Bearer ' + authCtx.token,
-      },
-      body: JSON.stringify({ hostel: authCtx.user.hostel }),
-    });
-    if (res1.ok) {
-      const data = await res1.json();
-      setMenu(data.menu[date.getDay() - 1]);
-    } else {
-      console.log(res1);
-    }
+    try {
+      const res1 = await fetch(API_URL + '/api/v1/menu', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: 'Bearer ' + authCtx.token,
+        },
+        body: JSON.stringify({ hostel: authCtx.user.hostel }),
+      });
 
-    const res2 = await fetch(API_URL + '/api/v1/notices', {
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: 'Bearer ' + authCtx.token,
-      },
-    });
-    if (res2.ok) {
-      const data = await res2.json();
-      setNotices(data.notices);
-    } else {
-      console.log(res2);
+      if (res1.ok) {
+        const data = await res1.json();
+        setMenu(data.menu[date.getDay() - 1]);
+      } else {
+        console.log(res1);
+      }
+
+      const res2 = await fetch(API_URL + '/api/v1/notices', {
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: 'Bearer ' + authCtx.token,
+        },
+      });
+
+      if (res2.ok) {
+        const data = await res2.json();
+        setNotices(data.notices);
+      } else {
+        console.log(res2);
+      }
+    } catch (e) {
+      console.log(e);
     }
     setLoading(false);
   }

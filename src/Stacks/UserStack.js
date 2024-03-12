@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Button, Pressable } from 'react-native';
+import { StyleSheet, Button } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Home from '../screens/Home';
@@ -12,132 +12,36 @@ import RaiseIssue from '../screens/RaiseIssue';
 import EmployeeList from '../screens/EmployeeList';
 import Menu from '../screens/Menu';
 import NewNotice from '../screens/NewNotice';
-
-import { IoLogOut } from 'react-icons/io5';
+import IconButton from '../components/UI/IconButton';
 
 const Stack = createNativeStackNavigator();
 
 const UserStack = () => {
   const authCtx = useContext(AuthContext);
   return (
-    <Stack.Navigator options={{}}>
-      <Stack.Screen
-        name='Home'
-        component={Home}
-        options={{
-          headerRight: (
-            <Pressable onPress={authCtx.logout}>
-              <Text>
-                <IoLogOut />
-              </Text>
-            </Pressable>
-          ),
-        }}
-      />
-      <Stack.Screen
-        name='Warden'
-        component={Warden}
-        options={{
-          headerRight: (
-            <Pressable onPress={authCtx.logout}>
-              <Text>
-                <IoLogOut />
-              </Text>
-            </Pressable>
-          ),
-        }}
-      />
-      <Stack.Screen
-        name='Student List'
-        component={StudentList}
-        options={{
-          headerRight: (
-            <Pressable onPress={authCtx.logout}>
-              <Text>
-                <IoLogOut />
-              </Text>
-            </Pressable>
-          ),
-        }}
-      />
-      <Stack.Screen
-        name='Maintenance List'
-        component={MaintenanceList}
-        options={{
-          headerRight: (
-            <Pressable onPress={authCtx.logout}>
-              <Text>
-                <IoLogOut />
-              </Text>
-            </Pressable>
-          ),
-        }}
-      />
-      <Stack.Screen
-        name='Dashboard'
-        component={Dashboard}
-        options={{
-          headerRight: (
-            <Pressable onPress={authCtx.logout}>
-              <Text>
-                <IoLogOut />
-              </Text>
-            </Pressable>
-          ),
-        }}
-      />
-      <Stack.Screen
-        name='Issue'
-        component={RaiseIssue}
-        options={{
-          headerRight: (
-            <Pressable onPress={authCtx.logout}>
-              <Text>
-                <IoLogOut />
-              </Text>
-            </Pressable>
-          ),
-        }}
-      />
-      <Stack.Screen
-        name='Employee List'
-        component={EmployeeList}
-        options={{
-          headerRight: (
-            <Pressable onPress={authCtx.logout}>
-              <Text>
-                <IoLogOut />
-              </Text>
-            </Pressable>
-          ),
-        }}
-      />
-      <Stack.Screen
-        name='Menu'
-        component={Menu}
-        options={{
-          headerRight: (
-            <Pressable onPress={authCtx.logout}>
-              <Text>
-                <IoLogOut />
-              </Text>
-            </Pressable>
-          ),
-        }}
-      />
-      <Stack.Screen
-        name='NewNotice'
-        component={NewNotice}
-        options={{
-          headerRight: (
-            <Pressable onPress={authCtx.logout}>
-              <Text>
-                <IoLogOut />
-              </Text>
-            </Pressable>
-          ),
-        }}
-      />
+    <Stack.Navigator
+      screenOptions={{
+        headerRight: ({ tintColor }) => {
+          return (
+            <IconButton
+              icon='exit'
+              color={tintColor}
+              size={24}
+              onPress={authCtx.logout}
+            />
+          );
+        },
+      }}
+    >
+      <Stack.Screen name='Home' component={Home} />
+      <Stack.Screen name='Dashboard' component={Dashboard} />
+      <Stack.Screen name='Warden' component={Warden} />
+      <Stack.Screen name='Student List' component={StudentList} />
+      <Stack.Screen name='Maintenance List' component={MaintenanceList} />
+      <Stack.Screen name='Issue' component={RaiseIssue} />
+      <Stack.Screen name='Employee List' component={EmployeeList} />
+      <Stack.Screen name='Menu' component={Menu} />
+      <Stack.Screen name='NewNotice' component={NewNotice} />
     </Stack.Navigator>
   );
 };
