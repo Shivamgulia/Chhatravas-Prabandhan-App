@@ -44,6 +44,20 @@ const Home = () => {
             navigation.navigate('Employee List');
           }}
         />
+        <Button
+          title='go to Menu'
+          onPress={() => {
+            console.log('got to Menu');
+            navigation.navigate('Menu');
+          }}
+        />
+        <Button
+          title='go to New Notice'
+          onPress={() => {
+            console.log('got to New Notice');
+            navigation.navigate('NewNotice');
+          }}
+        />
       </View>
     </View>
   );
