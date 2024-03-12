@@ -1,38 +1,25 @@
-// import { StyleSheet, Text, View } from 'react-native';
-// import React from 'react';
-
-// const StudentList = () => {
-//   return (
-//     <View>
-//       <Text>StudentList</Text>
-//     </View>
-//   );
-// };
-
-// export default StudentList;
-
-// const styles = StyleSheet.create({});
 import { API_URL } from '@env';
 import React, { useEffect, useState, useContext } from 'react';
 import { View, Text, Button, FlatList, StyleSheet } from 'react-native';
 import { AuthContext } from '../store/authContext';
+import Loading from '../components/UI/Loading';
 
 function StudentList() {
   const authCtx = useContext(AuthContext);
 
   const [page, setPage] = useState(1);
   const [students, setStudents] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getStudents();
   }, [page, authCtx]);
 
   async function getStudents() {
+    setLoading(true);
     const hostel = await authCtx.user.hostel;
-    console.log(hostel);
-    console.log(authCtx.token);
+
     if (authCtx.token) {
-      console.log('auth', authCtx.token);
       const response = await fetch(API_URL + '/api/v1/student', {
         method: 'POST',
         headers: {
@@ -47,9 +34,17 @@ function StudentList() {
       } else {
         const data = await response.json();
         setStudents(data.students);
-        console.log(data);
       }
     }
+    setLoading(false);
+  }
+
+  if (loading) {
+    return (
+      <View style={styles.loading}>
+        <Loading />
+      </View>
+    );
   }
 
   return (
@@ -100,6 +95,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: 10,
   },
+  loading: { flex: 1 },
 });
 
 export default StudentList;

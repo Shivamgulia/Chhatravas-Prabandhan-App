@@ -16,10 +16,11 @@ const Notice = () => {
   const authCtx = useContext(AuthContext);
   const [head, setHead] = useState('');
   const [details, setDetails] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const submitionHandler = async () => {
     const noticeData = { head, details };
-
+    setLoading(true);
     try {
       const res = await fetch(API_URL + '/api/v1/notices', {
         method: 'POST',
@@ -32,19 +33,14 @@ const Notice = () => {
 
       if (res.ok) {
         const data = await res.json();
-        console.log(data);
-        // Optionally display a success message
         Alert.alert('Notice added successfully');
       } else {
-        console.log(res);
-        // Display an error message
         Alert.alert('Error', 'Failed to add notice');
       }
     } catch (error) {
-      console.error('Error:', error);
-      // Display an error message
       Alert.alert('Error', 'An unexpected error occurred');
     }
+    setLoading(false);
   };
 
   return (

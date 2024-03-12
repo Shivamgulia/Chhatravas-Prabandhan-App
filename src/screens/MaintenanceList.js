@@ -1,31 +1,19 @@
-// import { StyleSheet, Text, View } from 'react-native';
-// import React from 'react';
-
-// const MaintenanceList = () => {
-//   return (
-//     <View>
-//       <Text>MaintenanceList</Text>
-//     </View>
-//   );
-// };
-
-// export default MaintenanceList;
-
-// const styles = StyleSheet.create({});
-
 import { API_URL } from '@env';
 
 import React, { useEffect, useState, useContext } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, Button, StyleSheet, Alert } from 'react-native';
 import { AuthContext } from '../store/authContext';
+import Loading from '../components/UI/Loading';
 
 function Maintainance() {
   const authCtx = useContext(AuthContext);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [maintainance, setMaintainance] = useState([]);
   const [page, setPage] = useState(1);
 
   async function fetchMaintainance() {
+    setLoading(true);
+
     const hostel = await authCtx.user.hostel;
     if (authCtx.token) {
       const response = await fetch(API_URL + '/api/v1/maintainance', {
@@ -38,20 +26,26 @@ function Maintainance() {
       });
 
       if (!response.ok) {
-        console.log('Error');
+        Alert.alert('Request Failed');
       } else {
         const data = await response.json();
         setMaintainance(data.maintainance);
-        console.log(data);
       }
     }
+    setLoading(false);
   }
 
   useEffect(() => {
-    setLoading(true);
     fetchMaintainance();
-    setLoading(false);
   }, []);
+
+  if (loading) {
+    return (
+      <View style={styles.loading}>
+        <Loading />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -106,6 +100,9 @@ const styles = StyleSheet.create({
   btnsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  loading: {
+    flex: 1,
   },
 });
 

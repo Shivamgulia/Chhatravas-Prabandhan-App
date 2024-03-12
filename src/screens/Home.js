@@ -8,7 +8,6 @@ import Navbar from '../components/Navbar/Navbar';
 const Home = () => {
   const authCtx = useContext(AuthContext);
   const navigation = useNavigation();
-  console.log(authCtx.login);
 
   return (
     <View style={styles.cont}>
@@ -22,48 +21,6 @@ const Home = () => {
           <Text style={styles.text}>Roll No. : {authCtx?.user?.rollno}</Text>
         )}
         <Text style={styles.text}>Hostel : {authCtx?.user?.hostel}</Text>
-        {/* <Button
-          title='go to warden'
-          onPress={() => {
-            console.log('got to warden');
-            navigation.navigate('Warden');
-          }}
-        />
-        <Button
-          title='go to Dashboard'
-          onPress={() => {
-            console.log('got to dashboard');
-            navigation.navigate('Dashboard');
-          }}
-        />
-        <Button
-          title='go to Issue'
-          onPress={() => {
-            console.log('got to Issue');
-            navigation.navigate('Issue');
-          }}
-        />
-        <Button
-          title='go to Employess'
-          onPress={() => {
-            console.log('got to Employees');
-            navigation.navigate('Employee List');
-          }}
-        />
-        <Button
-          title='go to Menu'
-          onPress={() => {
-            console.log('got to Menu');
-            navigation.navigate('Menu');
-          }}
-        />
-        <Button
-          title='go to New Notice'
-          onPress={() => {
-            console.log('got to New Notice');
-            navigation.navigate('NewNotice');
-          }}
-        /> */}
       </View>
     </View>
   );

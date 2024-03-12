@@ -12,12 +12,14 @@ import {
 } from 'react-native';
 import { Modal } from 'react-native';
 import { AuthContext } from '../store/authContext';
+import Loading from '../components/UI/Loading';
 
 const EmployeeList = () => {
   const authCtx = useContext(AuthContext);
 
   const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
   const [employees, setEmployees] = useState([]);
@@ -27,6 +29,7 @@ const EmployeeList = () => {
   }, [page, authCtx]);
 
   async function getEmployees() {
+    setLoading(true);
     const hostel = authCtx.user.hostel;
     if (authCtx.token) {
       const response = await fetch(API_URL + '/api/v1/employee', {
@@ -43,12 +46,14 @@ const EmployeeList = () => {
         setEmployees(data.employees);
         setPages(data.count);
       } else {
-        console.log('Error');
+        Alert.alert('request Failed');
       }
     }
+    setLoading(false);
   }
 
   async function addEmployee(name, job) {
+    setLoading(true);
     const hostel = authCtx.user.hostel;
     const token = authCtx.token;
     const res = await fetch(API_URL + '/api/v1/employee/create', {
@@ -65,6 +70,7 @@ const EmployeeList = () => {
     } else {
       setError(true);
     }
+    setLoading(false);
   }
 
   async function deleteEmployee(id) {
@@ -94,7 +100,7 @@ const EmployeeList = () => {
             if (res.ok) {
               getEmployees();
             } else {
-              console.log('Error');
+              Alert.alert('Delete Failed');
             }
           },
           style: 'cancel',
@@ -109,6 +115,14 @@ const EmployeeList = () => {
 
   function closeModal() {
     setShowModal(false);
+  }
+
+  if (loading) {
+    return (
+      <View style={styles.loading}>
+        <Loading />
+      </View>
+    );
   }
 
   if (!authCtx.user) return <View></View>;
@@ -285,6 +299,9 @@ const styles = StyleSheet.create({
   pageText: {
     color: '#fff',
     textAlign: 'center',
+  },
+  loading: {
+    flex: 1,
   },
 });
 

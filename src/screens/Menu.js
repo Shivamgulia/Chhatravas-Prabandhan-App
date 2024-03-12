@@ -1,15 +1,18 @@
 import { API_URL } from '@env';
 import React, { useContext, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import MenuTable from '../components/Tables/MenuTable';
 import { AuthContext } from '../store/authContext';
+import Loading from '../components/UI/Loading';
 
 const Menu = () => {
   const [menu, setMenu] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const authCtx = useContext(AuthContext);
 
   async function getMenu() {
+    setLoading(true);
     const res = await fetch(API_URL + '/api/v1/menu', {
       method: 'POST',
       headers: {
@@ -21,15 +24,23 @@ const Menu = () => {
     if (res.ok) {
       const data = await res.json();
       setMenu(data.menu);
-      console.log(data);
     } else {
-      console.log(res);
+      Alert.alert('Request Failed');
     }
+    setLoading(false);
   }
 
   useEffect(() => {
     getMenu();
   }, [authCtx]);
+
+  if (loading) {
+    return (
+      <View style={styles.loading}>
+        <Loading />
+      </View>
+    );
+  }
 
   return (
     <View>
@@ -37,5 +48,9 @@ const Menu = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  loading: { flex: 1 },
+});
 
 export default Menu;

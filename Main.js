@@ -8,14 +8,18 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AuthStack from './src/Stacks/AuthStack';
 import UserStack from './src/Stacks/UserStack';
 import Navbar from './src/components/Navbar/Navbar';
+import Loading from './src/components/UI/Loading';
 
+import { API_URL } from '@env';
 const Stack = createNativeStackNavigator();
 
 export default function Main() {
   const [loggedIn, setLoggedIn] = useState(false);
   const authCtx = useContext(AuthContext);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     async function checkUser() {
       const token = await AsyncStorage.getItem('token');
       if (!!token) {
@@ -27,11 +31,20 @@ export default function Main() {
       }
     }
     checkUser();
+    setLoading(false);
   }, []);
 
   useEffect(() => {
     setLoggedIn(authCtx.isLoggedIn);
   }, [authCtx]);
+
+  if (loading) {
+    return (
+      <View style={styles.loading}>
+        <Loading />
+      </View>
+    );
+  }
 
   return (
     <>
@@ -60,5 +73,8 @@ const styles = StyleSheet.create({
     // paddingBottom: 30,
     // paddingLeft: 10,
     // paddingRight: 10,
+  },
+  loading: {
+    flex: 1,
   },
 });

@@ -14,16 +14,18 @@ import {
 } from 'react-native';
 import React, { useContext, useState } from 'react';
 import { AuthContext } from '../store/authContext';
+import Loading from '../components/UI/Loading';
 
 export default function Auth({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const authCtx = useContext(AuthContext);
 
   async function login() {
-    console.log(API_URL);
     if (email.replace(' ', '') != '' && password.replace(' ', '') != '') {
+      setLoading(true);
       try {
         const res = await fetch(API_URL + '/api/auth/login', {
           method: 'POST',
@@ -42,12 +44,22 @@ export default function Auth({ navigation }) {
         } else {
         }
       } catch (e) {
-        console.log('error', error);
+        Alert.alert('Request Failed');
       }
+      setLoading(false);
     } else {
       Alert.alert('Incompleted Field', 'Fill Username and Password Properly');
     }
   }
+
+  if (loading) {
+    return (
+      <View style={styles.loading}>
+        <Loading />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.scrollCont}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -119,5 +131,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     fontSize: 20,
     width: '60%',
+  },
+  loading: {
+    flex: 1,
   },
 });

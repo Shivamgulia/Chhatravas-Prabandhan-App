@@ -20,11 +20,13 @@ import {
   TouchableOpacity,
   StyleSheet,
   Pressable,
+  Alert,
 } from 'react-native';
 
 import { Modal } from 'react-native';
 
 import { AuthContext } from '../store/authContext';
+import Loading from '../components/UI/Loading';
 
 const NoticeBoard = () => {
   const [showModal, setShowModal] = useState(false);
@@ -51,7 +53,7 @@ const NoticeBoard = () => {
         const data = await res1.json();
         setMenu(data.menu[date.getDay() - 1]);
       } else {
-        console.log(res1);
+        Alert.alert('Request Failed');
       }
 
       const res2 = await fetch(API_URL + '/api/v1/notices', {
@@ -65,10 +67,10 @@ const NoticeBoard = () => {
         const data = await res2.json();
         setNotices(data.notices);
       } else {
-        console.log(res2);
+        Alert.alert('Request Failed');
       }
     } catch (e) {
-      console.log(e);
+      Alert.alert('Request Failed');
     }
     setLoading(false);
   }
@@ -84,6 +86,14 @@ const NoticeBoard = () => {
 
   function closeModal() {
     setShowModal(false);
+  }
+
+  if (loading) {
+    return (
+      <View style={styles.loading}>
+        <Loading />
+      </View>
+    );
   }
 
   return (
@@ -263,6 +273,7 @@ const styles = StyleSheet.create({
   modalNotice: {
     fontSize: 16,
   },
+  loading: { flex: 1 },
 });
 
 const Days = [

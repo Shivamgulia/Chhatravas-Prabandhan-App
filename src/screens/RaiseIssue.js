@@ -11,6 +11,7 @@ import {
   Keyboard,
 } from 'react-native';
 import { AuthContext } from '../store/authContext';
+import Loading from '../components/UI/Loading';
 
 function RaiseIssue() {
   const authCtx = useContext(AuthContext);
@@ -20,10 +21,12 @@ function RaiseIssue() {
   const [description, setDescription] = useState('');
   const [issue, setIssue] = useState('');
   const [hostel, setHostel] = useState(authCtx?.user?.hostel);
+  const [loading, setLoading] = useState(false);
 
   async function handleSubmit() {
     if (issue.replace(' ', '') != '' && description.replace(' ', '') != '') {
-      console.log(authCtx.token);
+      setLoading(true);
+
       const res = await fetch(API_URL + '/api/v1/maintainance/raise', {
         method: 'POST',
         headers: {
@@ -33,8 +36,16 @@ function RaiseIssue() {
         body: JSON.stringify({ roomNo, raiser, description, issue, hostel }),
       });
       const data = await res.json();
-      console.log(data);
+
+      setLoading(false);
     }
+  }
+  if (loading) {
+    return (
+      <View style={styles.loading}>
+        <Loading />
+      </View>
+    );
   }
 
   return (
@@ -123,6 +134,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginTop: 10,
     alignItems: 'center',
+  },
+  loading: {
+    flex: 1,
   },
 });
 
