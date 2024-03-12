@@ -1,4 +1,3 @@
-import { API_URL } from '@env';
 import React, { useContext, useState } from 'react';
 import {
   View,
@@ -12,29 +11,36 @@ import {
 import { Modal } from 'react-native';
 import { AuthContext } from '../../store/authContext';
 
+import Loading from '../UI/Loading';
+
 function MenuTable(props) {
   const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [item, setItem] = useState(null);
   const [formData, setFormData] = useState(null);
 
   const authCtx = useContext(AuthContext);
 
   async function updateMenu() {
-    const res = await fetch(API_URL + '/api/v1/menu/update', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: 'Bearer ' + authCtx.token,
-      },
-      body: JSON.stringify(formData),
-    });
+    setLoading(true);
+    const res = await fetch(
+      process.env.EXPO_PUBLIC_API_URL + '/api/v1/menu/update',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: 'Bearer ' + authCtx.token,
+        },
+        body: JSON.stringify(formData),
+      }
+    );
     if (res.ok) {
       const data = await res.json();
       props.update();
-      console.log(data);
     } else {
-      console.log(res);
+      Alert.alert('Request Failed');
     }
+    setLoading(false);
   }
 
   function openModal(selectedItem) {
@@ -45,6 +51,14 @@ function MenuTable(props) {
 
   function closeModal() {
     setShowModal(false);
+  }
+
+  if (loading) {
+    return (
+      <View style={styles.loading}>
+        <Loading />
+      </View>
+    );
   }
 
   return (
@@ -211,6 +225,9 @@ const styles = StyleSheet.create({
   cell: {
     fontSize: 16,
     color: '#333',
+  },
+  loading: {
+    flex: 1,
   },
 });
 

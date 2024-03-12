@@ -1,4 +1,3 @@
-import { API_URL } from '@env';
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Text,
@@ -32,14 +31,17 @@ const EmployeeList = () => {
     setLoading(true);
     const hostel = authCtx.user.hostel;
     if (authCtx.token) {
-      const response = await fetch(API_URL + '/api/v1/employee', {
-        method: 'POST',
-        headers: {
-          authorization: `Bearer ${authCtx.token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ page, hostel }),
-      });
+      const response = await fetch(
+        process.env.EXPO_PUBLIC_API_URL + '/api/v1/employee',
+        {
+          method: 'POST',
+          headers: {
+            authorization: `Bearer ${authCtx.token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ page, hostel }),
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
@@ -56,14 +58,17 @@ const EmployeeList = () => {
     setLoading(true);
     const hostel = authCtx.user.hostel;
     const token = authCtx.token;
-    const res = await fetch(API_URL + '/api/v1/employee/create', {
-      method: 'POST',
-      headers: {
-        authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name, job, hostel }),
-    });
+    const res = await fetch(
+      process.env.EXPO_PUBLIC_API_URL + '/api/v1/employee/create',
+      {
+        method: 'POST',
+        headers: {
+          authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, job, hostel }),
+      }
+    );
     if (res.ok) {
       getEmployees();
       closeModal();
@@ -89,14 +94,17 @@ const EmployeeList = () => {
         {
           text: 'Ok',
           onPress: async () => {
-            const res = await fetch(API_URL + '/api/v1/employee', {
-              method: 'DELETE',
-              headers: {
-                authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ id }),
-            });
+            const res = await fetch(
+              process.env.EXPO_PUBLIC_API_URL + '/api/v1/employee',
+              {
+                method: 'DELETE',
+                headers: {
+                  authorization: `Bearer ${token}`,
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id }),
+              }
+            );
             if (res.ok) {
               getEmployees();
             } else {

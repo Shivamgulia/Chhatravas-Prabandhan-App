@@ -1,4 +1,3 @@
-import { API_URL } from '@env';
 import React, { useState, useContext, useEffect } from 'react';
 import {
   View,
@@ -27,14 +26,17 @@ function RaiseIssue() {
     if (issue.replace(' ', '') != '' && description.replace(' ', '') != '') {
       setLoading(true);
 
-      const res = await fetch(API_URL + '/api/v1/maintainance/raise', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: 'Bearer ' + authCtx.token,
-        },
-        body: JSON.stringify({ roomNo, raiser, description, issue, hostel }),
-      });
+      const res = await fetch(
+        process.env.EXPO_PUBLIC_API_URL + '/api/v1/maintainance/raise',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            authorization: 'Bearer ' + authCtx.token,
+          },
+          body: JSON.stringify({ roomNo, raiser, description, issue, hostel }),
+        }
+      );
       const data = await res.json();
 
       setLoading(false);

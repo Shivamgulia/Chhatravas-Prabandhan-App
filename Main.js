@@ -10,7 +10,6 @@ import UserStack from './src/Stacks/UserStack';
 import Navbar from './src/components/Navbar/Navbar';
 import Loading from './src/components/UI/Loading';
 
-import { API_URL } from '@env';
 const Stack = createNativeStackNavigator();
 
 export default function Main() {
@@ -26,7 +25,6 @@ export default function Main() {
         setLoggedIn(true);
         const user = await AsyncStorage.getItem('user');
         const userObj = await JSON.parse(user);
-        console.log(userObj);
         authCtx.setValues({ user: userObj, token });
       }
     }

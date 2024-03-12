@@ -1,4 +1,3 @@
-import { API_URL } from '@env';
 import React, { useContext, useState } from 'react';
 import {
   View,
@@ -22,14 +21,17 @@ const Notice = () => {
     const noticeData = { head, details };
     setLoading(true);
     try {
-      const res = await fetch(API_URL + '/api/v1/notices', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: 'Bearer ' + authCtx.token,
-        },
-        body: JSON.stringify(noticeData),
-      });
+      const res = await fetch(
+        process.env.EXPO_PUBLIC_API_URL + '/api/v1/notices',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            authorization: 'Bearer ' + authCtx.token,
+          },
+          body: JSON.stringify(noticeData),
+        }
+      );
 
       if (res.ok) {
         const data = await res.json();

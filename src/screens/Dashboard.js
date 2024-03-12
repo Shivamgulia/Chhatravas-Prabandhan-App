@@ -1,18 +1,3 @@
-// import { StyleSheet, Text, View } from 'react-native';
-// import React from 'react';
-
-// const Dashboard = () => {
-//   return (
-//     <View>
-//       <Text>Dashboard</Text>
-//     </View>
-//   );
-// };
-
-// export default Dashboard;
-
-// const styles = StyleSheet.create({});
-import { API_URL } from '@env';
 import React, { useContext, useEffect, useState } from 'react';
 import {
   View,
@@ -40,14 +25,17 @@ const NoticeBoard = () => {
   async function getData() {
     setLoading(true);
     try {
-      const res1 = await fetch(API_URL + '/api/v1/menu', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: 'Bearer ' + authCtx.token,
-        },
-        body: JSON.stringify({ hostel: authCtx.user.hostel }),
-      });
+      const res1 = await fetch(
+        process.env.EXPO_PUBLIC_API_URL + '/api/v1/menu',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            authorization: 'Bearer ' + authCtx.token,
+          },
+          body: JSON.stringify({ hostel: authCtx.user.hostel }),
+        }
+      );
 
       if (res1.ok) {
         const data = await res1.json();
@@ -56,12 +44,15 @@ const NoticeBoard = () => {
         Alert.alert('Request Failed');
       }
 
-      const res2 = await fetch(API_URL + '/api/v1/notices', {
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: 'Bearer ' + authCtx.token,
-        },
-      });
+      const res2 = await fetch(
+        process.env.EXPO_PUBLIC_API_URL + '/api/v1/notices',
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            authorization: 'Bearer ' + authCtx.token,
+          },
+        }
+      );
 
       if (res2.ok) {
         const data = await res2.json();

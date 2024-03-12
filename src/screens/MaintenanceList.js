@@ -1,5 +1,3 @@
-import { API_URL } from '@env';
-
 import React, { useEffect, useState, useContext } from 'react';
 import { View, Text, Button, StyleSheet, Alert } from 'react-native';
 import { AuthContext } from '../store/authContext';
@@ -16,14 +14,17 @@ function Maintainance() {
 
     const hostel = await authCtx.user.hostel;
     if (authCtx.token) {
-      const response = await fetch(API_URL + '/api/v1/maintainance', {
-        method: 'POST',
-        headers: {
-          authorization: `Bearer ${authCtx.token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ page, hostel }),
-      });
+      const response = await fetch(
+        process.env.EXPO_PUBLIC_API_URL + '/api/v1/maintainance',
+        {
+          method: 'POST',
+          headers: {
+            authorization: `Bearer ${authCtx.token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ page, hostel }),
+        }
+      );
 
       if (!response.ok) {
         Alert.alert('Request Failed');

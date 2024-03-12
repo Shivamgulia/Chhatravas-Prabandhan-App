@@ -1,4 +1,3 @@
-import { API_URL } from '@env';
 import React, { useContext, useEffect, useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 import MenuTable from '../components/Tables/MenuTable';
@@ -13,7 +12,7 @@ const Menu = () => {
 
   async function getMenu() {
     setLoading(true);
-    const res = await fetch(API_URL + '/api/v1/menu', {
+    const res = await fetch(process.env.EXPO_PUBLIC_API_URL + '/api/v1/menu', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
