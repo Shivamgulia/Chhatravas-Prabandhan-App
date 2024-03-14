@@ -15,7 +15,9 @@ import Loading from '../components/UI/Loading';
 function RaiseIssue() {
   const authCtx = useContext(AuthContext);
 
-  const [roomNo, setRoomNo] = useState(authCtx?.user?.room.toString());
+  const [roomNo, setRoomNo] = useState(
+    authCtx?.user?.room ? authCtx?.user?.room.toString() : '0'
+  );
   const [raiser, setRaiser] = useState(authCtx?.user?.name);
   const [description, setDescription] = useState('');
   const [issue, setIssue] = useState('');
@@ -25,23 +27,37 @@ function RaiseIssue() {
   async function handleSubmit() {
     if (issue.replace(' ', '') != '' && description.replace(' ', '') != '') {
       setLoading(true);
-
-      const res = await fetch(
-        process.env.EXPO_PUBLIC_API_URL + '/api/v1/maintainance/raise',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            authorization: 'Bearer ' + authCtx.token,
-          },
-          body: JSON.stringify({ roomNo, raiser, description, issue, hostel }),
-        }
-      );
-      const data = await res.json();
-
+      try {
+        const res = await fetch(
+          process.env.EXPO_PUBLIC_API_URL + '/api/v1/maintainance/raise',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              authorization: 'Bearer ' + authCtx.token,
+            },
+            body: JSON.stringify({
+              roomNo,
+              raiser,
+              description,
+              issue,
+              hostel,
+            }),
+          }
+        );
+        const data = await res.json();
+      } catch (e) {
+        Alert.alert('Request Failed');
+      }
       setLoading(false);
     }
   }
+
+  useEffect(() => {
+    setRoomNo(authCtx?.user?.room ? authCtx?.user?.room.toString() : '0');
+    setRaiser(authCtx?.user?.name);
+  }, [authCtx.user]);
+
   if (loading) {
     return (
       <View style={styles.loading}>
@@ -111,7 +127,6 @@ const styles = StyleSheet.create({
   form: {
     flex: 1,
     width: '60%',
-    // backgroundColor: 'yellow',
   },
   inputDiv: {
     marginBottom: 10,

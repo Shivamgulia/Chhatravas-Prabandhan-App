@@ -13,11 +13,14 @@ import {
 import React, { useContext, useState } from 'react';
 import { AuthContext } from '../store/authContext';
 import Loading from '../components/UI/Loading';
+// import { useNavigation } from '@react-navigation/native';
 
 export default function Auth({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // const navigation = useNavigation();
 
   const authCtx = useContext(AuthContext);
 
@@ -45,7 +48,7 @@ export default function Auth({ navigation }) {
         } else {
         }
       } catch (e) {
-        Alert.alert('Request Failed');
+        Alert.alert('Request Failed', e + '' + process.env.EXPO_PUBLIC_API_URL);
       }
       setLoading(false);
     } else {
@@ -90,6 +93,12 @@ export default function Auth({ navigation }) {
                 />
               </View>
               <Button title='Login' onPress={login}></Button>
+              <Button
+                title='SignUp'
+                onPress={() => {
+                  navigation.navigate('SignUp');
+                }}
+              ></Button>
             </View>
           </>
         </KeyboardAvoidingView>

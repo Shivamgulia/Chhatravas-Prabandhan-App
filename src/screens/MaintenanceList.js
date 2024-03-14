@@ -11,27 +11,30 @@ function Maintainance() {
 
   async function fetchMaintainance() {
     setLoading(true);
+    try {
+      const hostel = await authCtx.user.hostel;
+      if (authCtx.token) {
+        const response = await fetch(
+          process.env.EXPO_PUBLIC_API_URL + '/api/v1/maintainance',
+          {
+            method: 'POST',
+            headers: {
+              authorization: `Bearer ${authCtx.token}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ page, hostel }),
+          }
+        );
 
-    const hostel = await authCtx.user.hostel;
-    if (authCtx.token) {
-      const response = await fetch(
-        process.env.EXPO_PUBLIC_API_URL + '/api/v1/maintainance',
-        {
-          method: 'POST',
-          headers: {
-            authorization: `Bearer ${authCtx.token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ page, hostel }),
+        if (!response.ok) {
+          Alert.alert('Request Failed');
+        } else {
+          const data = await response.json();
+          setMaintainance(data.maintainance);
         }
-      );
-
-      if (!response.ok) {
-        Alert.alert('Request Failed');
-      } else {
-        const data = await response.json();
-        setMaintainance(data.maintainance);
       }
+    } catch (e) {
+      Alert.alert('Request Failed');
     }
     setLoading(false);
   }

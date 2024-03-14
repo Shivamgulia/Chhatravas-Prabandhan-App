@@ -29,51 +29,59 @@ const EmployeeList = () => {
 
   async function getEmployees() {
     setLoading(true);
-    const hostel = authCtx.user.hostel;
-    if (authCtx.token) {
-      const response = await fetch(
-        process.env.EXPO_PUBLIC_API_URL + '/api/v1/employee',
-        {
-          method: 'POST',
-          headers: {
-            authorization: `Bearer ${authCtx.token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ page, hostel }),
-        }
-      );
+    try {
+      const hostel = authCtx.user.hostel;
+      if (authCtx.token) {
+        const response = await fetch(
+          process.env.EXPO_PUBLIC_API_URL + '/api/v1/employee',
+          {
+            method: 'POST',
+            headers: {
+              authorization: `Bearer ${authCtx.token}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ page, hostel }),
+          }
+        );
 
-      if (response.ok) {
-        const data = await response.json();
-        setEmployees(data.employees);
-        setPages(data.count);
-      } else {
-        Alert.alert('request Failed');
+        if (response.ok) {
+          const data = await response.json();
+          setEmployees(data.employees);
+          setPages(data.count);
+        } else {
+          Alert.alert('request Failed');
+        }
       }
+    } catch (e) {
+      Alert.alert('Request Failed');
     }
     setLoading(false);
   }
 
   async function addEmployee(name, job) {
     setLoading(true);
-    const hostel = authCtx.user.hostel;
-    const token = authCtx.token;
-    const res = await fetch(
-      process.env.EXPO_PUBLIC_API_URL + '/api/v1/employee/create',
-      {
-        method: 'POST',
-        headers: {
-          authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, job, hostel }),
+    try {
+      const hostel = authCtx.user.hostel;
+      const token = authCtx.token;
+      const res = await fetch(
+        process.env.EXPO_PUBLIC_API_URL + '/api/v1/employee/create',
+        {
+          method: 'POST',
+          headers: {
+            authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name, job, hostel }),
+        }
+      );
+      if (res.ok) {
+        getEmployees();
+        closeModal();
+      } else {
+        setError(true);
       }
-    );
-    if (res.ok) {
-      getEmployees();
-      closeModal();
-    } else {
-      setError(true);
+    } catch (e) {
+      Alert.alert('Request Failed');
     }
     setLoading(false);
   }
@@ -94,21 +102,25 @@ const EmployeeList = () => {
         {
           text: 'Ok',
           onPress: async () => {
-            const res = await fetch(
-              process.env.EXPO_PUBLIC_API_URL + '/api/v1/employee',
-              {
-                method: 'DELETE',
-                headers: {
-                  authorization: `Bearer ${token}`,
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ id }),
+            try {
+              const res = await fetch(
+                process.env.EXPO_PUBLIC_API_URL + '/api/v1/employee',
+                {
+                  method: 'DELETE',
+                  headers: {
+                    authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({ id }),
+                }
+              );
+              if (res.ok) {
+                getEmployees();
+              } else {
+                Alert.alert('Delete Failed');
               }
-            );
-            if (res.ok) {
-              getEmployees();
-            } else {
-              Alert.alert('Delete Failed');
+            } catch (e) {
+              Alert.alert('Request Failed');
             }
           },
           style: 'cancel',

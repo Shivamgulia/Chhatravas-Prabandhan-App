@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { View, Text, Button, FlatList, StyleSheet } from 'react-native';
+import { View, Text, Button, FlatList, StyleSheet, Alert } from 'react-native';
 import { AuthContext } from '../store/authContext';
 import Loading from '../components/UI/Loading';
 
@@ -16,27 +16,30 @@ function StudentList() {
 
   async function getStudents() {
     setLoading(true);
-    const hostel = await authCtx.user.hostel;
+    try {
+      const hostel = await authCtx.user.hostel;
+      if (authCtx.token) {
+        const response = await fetch(
+          process.env.EXPO_PUBLIC_API_URL + '/api/v1/student',
+          {
+            method: 'POST',
+            headers: {
+              authorization: `Bearer ${authCtx.token}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ page, hostel }),
+          }
+        );
 
-    if (authCtx.token) {
-      const response = await fetch(
-        process.env.EXPO_PUBLIC_API_URL + '/api/v1/student',
-        {
-          method: 'POST',
-          headers: {
-            authorization: `Bearer ${authCtx.token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ page, hostel }),
+        if (!response.ok) {
+          Alert.alert('Request Failed');
+        } else {
+          const data = await response.json();
+          setStudents(data.students);
         }
-      );
-
-      if (!response.ok) {
-        console.log('Error');
-      } else {
-        const data = await response.json();
-        setStudents(data.students);
       }
+    } catch (e) {
+      Alert.alert('Request Failed');
     }
     setLoading(false);
   }

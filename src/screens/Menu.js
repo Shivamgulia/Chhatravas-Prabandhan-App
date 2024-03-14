@@ -12,18 +12,25 @@ const Menu = () => {
 
   async function getMenu() {
     setLoading(true);
-    const res = await fetch(process.env.EXPO_PUBLIC_API_URL + '/api/v1/menu', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: 'Bearer ' + authCtx.token,
-      },
-      body: JSON.stringify({ hostel: authCtx.user.hostel }),
-    });
-    if (res.ok) {
-      const data = await res.json();
-      setMenu(data.menu);
-    } else {
+    try {
+      const res = await fetch(
+        process.env.EXPO_PUBLIC_API_URL + '/api/v1/menu',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            authorization: 'Bearer ' + authCtx.token,
+          },
+          body: JSON.stringify({ hostel: authCtx.user.hostel }),
+        }
+      );
+      if (res.ok) {
+        const data = await res.json();
+        setMenu(data.menu);
+      } else {
+        Alert.alert('Request Failed');
+      }
+    } catch (e) {
       Alert.alert('Request Failed');
     }
     setLoading(false);

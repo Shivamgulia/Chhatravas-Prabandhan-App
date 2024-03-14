@@ -8,6 +8,12 @@
       "distribution": "internal"
     },
     "preview": {
+      "android": {
+        "env": {
+          "EXPO_PUBLIC_API_URL": "https://chhatravas-prabandhan.vercel.app"
+        },
+        "buildType": "apk"
+      },
       "distribution": "internal"
     },
     "production": {}

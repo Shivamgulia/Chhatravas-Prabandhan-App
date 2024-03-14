@@ -11,23 +11,24 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "buildNumber": "1.0.0",
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.shivamgulia.HMS"
     },
     "android": {
       "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.shivamgulia.HMS"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "scheme": "HMS",
     "extra": {
       "eas": {
         "projectId": "6a9ac41b-fcd5-44d6-8d58-858a59c39755"

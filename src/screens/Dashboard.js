@@ -41,7 +41,7 @@ const NoticeBoard = () => {
         const data = await res1.json();
         setMenu(data.menu[date.getDay() - 1]);
       } else {
-        Alert.alert('Request Failed');
+        Alert.alert('Request failed');
       }
 
       const res2 = await fetch(
@@ -58,10 +58,10 @@ const NoticeBoard = () => {
         const data = await res2.json();
         setNotices(data.notices);
       } else {
-        Alert.alert('Request Failed');
+        Alert.alert('Request failed');
       }
     } catch (e) {
-      Alert.alert('Request Failed');
+      Alert.alert('Request Failed', e);
     }
     setLoading(false);
   }
