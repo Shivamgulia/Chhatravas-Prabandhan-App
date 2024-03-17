@@ -72,7 +72,7 @@ export default function Auth({ navigation }) {
           <>
             <View style={styles.head}>
               <Text style={styles.title}>Hostel Management System</Text>
-              <Text style={styles.title}>Auth</Text>
+              {/* <Text style={styles.title}>Auth</Text> */}
             </View>
             <View style={styles.form}>
               <View style={styles.inputDiv}>

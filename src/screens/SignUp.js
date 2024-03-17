@@ -32,8 +32,8 @@ const SignUp = ({ navigation }) => {
   async function signIn() {
     console.log("SignIn");
     try {
-      await GoogleSignin.hasPlayServices();
-      console.log("hello1");
+      const hasplay = await GoogleSignin.hasPlayServices();
+      console.log("hello1", hasplay);
       const user = await GoogleSignin.signIn();
       console.log(user);
       if (user.user.email.includes("hbtu.ac.in")) {
@@ -45,6 +45,7 @@ const SignUp = ({ navigation }) => {
     } catch (e) {
       console.log("error", JSON.stringify(e));
       setError("error" + JSON.stringify(e));
+      console.log(statusCodes);
     }
   }
 
