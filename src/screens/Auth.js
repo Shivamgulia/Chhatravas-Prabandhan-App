@@ -9,15 +9,16 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
-} from 'react-native';
-import React, { useContext, useState } from 'react';
-import { AuthContext } from '../store/authContext';
-import Loading from '../components/UI/Loading';
+  Pressable,
+} from "react-native";
+import React, { useContext, useState } from "react";
+import { AuthContext } from "../store/authContext";
+import Loading from "../components/UI/Loading";
 // import { useNavigation } from '@react-navigation/native';
 
 export default function Auth({ navigation }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   // const navigation = useNavigation();
@@ -25,15 +26,15 @@ export default function Auth({ navigation }) {
   const authCtx = useContext(AuthContext);
 
   async function login() {
-    if (email.replace(' ', '') != '' && password.replace(' ', '') != '') {
+    if (email.replace(" ", "") != "" && password.replace(" ", "") != "") {
       setLoading(true);
       try {
         const res = await fetch(
-          process.env.EXPO_PUBLIC_API_URL + '/api/auth/login',
+          process.env.EXPO_PUBLIC_API_URL + "/api/auth/login",
           {
-            method: 'POST',
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({ email, password }),
           }
@@ -48,11 +49,11 @@ export default function Auth({ navigation }) {
         } else {
         }
       } catch (e) {
-        Alert.alert('Request Failed', e + '' + process.env.EXPO_PUBLIC_API_URL);
+        Alert.alert("Request Failed", e + "" + process.env.EXPO_PUBLIC_API_URL);
       }
       setLoading(false);
     } else {
-      Alert.alert('Incompleted Field', 'Fill Username and Password Properly');
+      Alert.alert("Incompleted Field", "Fill Username and Password Properly");
     }
   }
 
@@ -67,7 +68,7 @@ export default function Auth({ navigation }) {
   return (
     <View style={styles.scrollCont}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <KeyboardAvoidingView style={styles.cont} behavior='height'>
+        <KeyboardAvoidingView style={styles.cont} behavior="height">
           <>
             <View style={styles.head}>
               <Text style={styles.title}>Hostel Management System</Text>
@@ -78,8 +79,8 @@ export default function Auth({ navigation }) {
                 <Text style={styles.label}>Username</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder='JhoneDoe'
-                  autoCapitalize='none'
+                  placeholder="JhoneDoe"
+                  autoCapitalize="none"
                   onChangeText={setEmail}
                 />
               </View>
@@ -87,18 +88,22 @@ export default function Auth({ navigation }) {
                 <Text style={styles.label}>Password</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder='Password'
-                  autoCapitalize='none'
+                  placeholder="Password"
+                  autoCapitalize="none"
                   onChangeText={setPassword}
                 />
               </View>
-              <Button title='Login' onPress={login}></Button>
-              <Button
-                title='SignUp'
-                onPress={() => {
-                  navigation.navigate('SignUp');
+              <Pressable
+                onPress={login}
+                style={({ pressed }) => {
+                  return [
+                    styles.loginButton,
+                    pressed ? styles.loginButtonPressed : "",
+                  ];
                 }}
-              ></Button>
+              >
+                <Text style={styles.loginText}>Login</Text>
+              </Pressable>
             </View>
           </>
         </KeyboardAvoidingView>
@@ -110,26 +115,26 @@ export default function Auth({ navigation }) {
 const styles = StyleSheet.create({
   scrollCont: {
     flex: 1,
-    paddingTop: '25%',
-    width: '100%',
+    paddingTop: "25%",
+    width: "100%",
   },
   cont: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   head: {},
   title: {
     fontSize: 50,
-    textAlign: 'center',
-    fontWeight: 'bold',
+    textAlign: "center",
+    fontWeight: "bold",
   },
   form: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   inputDiv: {
-    alignItems: 'center',
-    width: '100%',
+    alignItems: "center",
+    width: "100%",
     marginBottom: 20,
   },
   label: {
@@ -137,11 +142,24 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   input: {
-    borderBottomColor: 'black',
+    borderBottomColor: "black",
     borderBottomWidth: 1,
     fontSize: 20,
-    width: '60%',
+    width: "60%",
   },
+  loginButton: {
+    alignItems: "center",
+    backgroundColor: "#014f86",
+    width: "60%",
+    alignSelf: "center",
+    paddingTop: 4,
+    paddingBottom: 8,
+    borderRadius: 5,
+  },
+  loginButtonPressed: {
+    backgroundColor: "#61a5c2",
+  },
+  loginText: { fontSize: 30, color: "white" },
   loading: {
     flex: 1,
   },

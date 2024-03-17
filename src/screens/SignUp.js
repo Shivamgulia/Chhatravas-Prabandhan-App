@@ -43,31 +43,28 @@ const SignUp = ({ navigation }) => {
         setError("User college email only");
       }
     } catch (e) {
-      console.log("error", e);
+      console.log("error", JSON.stringify(e));
       setError("error" + JSON.stringify(e));
     }
   }
 
   return (
     <View style={styles.cont}>
-      <Text style={styles.Title}>SignUp</Text>
-      <Button
-        title="Login"
-        onPress={() => {
-          navigation.navigate("Auth");
-        }}
-      ></Button>
       {!userInfo && (
-        <>
+        <View style={styles.signupButton}>
           <Text>{error}</Text>
           <GoogleSigninButton
             size={GoogleSigninButton.Size.Standard}
             color={GoogleSigninButton.Color.Light}
             onPress={signIn}
           />
-        </>
+        </View>
       )}
-      {userInfo && <SignUpForm user={userInfo} />}
+      {userInfo && (
+        <View style={styles.signupButton}>
+          <SignUpForm user={userInfo} />
+        </View>
+      )}
     </View>
   );
 };
@@ -78,5 +75,10 @@ const styles = StyleSheet.create({
   cont: {
     flex: 1,
     paddingTop: "20%",
+  },
+  signupButton: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
