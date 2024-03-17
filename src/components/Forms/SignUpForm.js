@@ -49,7 +49,7 @@ function SignUpForm({ user }) {
   };
 
   useEffect(() => {
-    const name = user.name;
+    const name = user.givenName;
 
     const rollno = user.email.replace("@hbtu.ac.in", "");
 
