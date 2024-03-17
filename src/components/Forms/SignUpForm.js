@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,29 +6,27 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
-} from 'react-native';
+} from "react-native";
 
-import Loading from '../UI/Loading';
+import Loading from "../UI/Loading";
 
 function SignUpForm({ user }) {
-  const [formData, setFormData] = useState({ name: '', email: '', rollno: '' });
-  const [formError, setFormError] = useState('');
-  const [password, setPassword] = useState('');
-  const [confrimPassword, setConfrimPassword] = useState('');
+  const [formData, setFormData] = useState({ name: "", email: "", rollno: "" });
+  const [formError, setFormError] = useState("");
+  const [password, setPassword] = useState("");
+  const [confrimPassword, setConfrimPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const signUp = async () => {
-    // Logic for signing up
-
     if (password === confrimPassword) {
       setLoading(true);
       try {
         const res = await fetch(
-          process.env.EXPO_PUBLIC_API_URL + '/api/auth/signup',
+          process.env.EXPO_PUBLIC_API_URL + "/api/auth/signup",
           {
-            method: 'POST',
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({
               ...formData,
@@ -41,19 +39,19 @@ function SignUpForm({ user }) {
           const data = await res.json();
           setFormError(data.message);
         } else {
-          Alert.alert('Sign Up Success Full');
+          Alert.alert("Sign Up Success Full");
         }
       } catch (e) {
-        Alert.alert('Sign Up Failed', e);
+        Alert.alert("Sign Up Failed", e);
       }
     }
     setLoading(false);
   };
 
   useEffect(() => {
-    const name = user.given_name;
+    const name = user.name;
 
-    const rollno = user.email.replace('@hbtu.ac.in', '');
+    const rollno = user.email.replace("@hbtu.ac.in", "");
 
     setFormData({ name: name, email: user.email, rollno: rollno });
   }, [user]);
@@ -83,13 +81,13 @@ function SignUpForm({ user }) {
           <Text style={styles.info}>{formData.rollno}</Text>
         </View>
       </View>
-      {formError !== '' && <Text style={styles.error}>{formError}</Text>}
+      {formError !== "" && <Text style={styles.error}>{formError}</Text>}
       <View style={styles.form}>
         <View style={styles.inputDiv}>
           <Text style={styles.label}>Password</Text>
           <TextInput
             secureTextEntry={true}
-            placeholder='Enter password'
+            placeholder="Enter password"
             style={styles.input}
             onChangeText={setPassword}
           />
@@ -98,7 +96,7 @@ function SignUpForm({ user }) {
           <Text style={styles.label}>Confirm Password</Text>
           <TextInput
             secureTextEntry={true}
-            placeholder='Confirm password'
+            placeholder="Confirm password"
             style={styles.input}
             onChangeText={setConfrimPassword}
           />
@@ -115,31 +113,31 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#F9F9F9',
+    backgroundColor: "#F9F9F9",
   },
   heading: {
     fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center",
     marginBottom: 20,
   },
   infoDiv: {
     marginBottom: 20,
   },
   userInfoDiv: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   info: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   error: {
-    color: 'red',
-    textAlign: 'center',
+    color: "red",
+    textAlign: "center",
     marginBottom: 20,
   },
   form: {
-    flexDirection: 'column',
+    flexDirection: "column",
   },
   inputDiv: {
     marginBottom: 20,
@@ -148,21 +146,21 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   input: {
-    width: '100%',
+    width: "100%",
     padding: 10,
     borderWidth: 1,
-    borderColor: '#CCC',
+    borderColor: "#CCC",
     borderRadius: 5,
   },
   button: {
     padding: 10,
-    backgroundColor: '#007BFF',
+    backgroundColor: "#007BFF",
     borderRadius: 5,
-    alignItems: 'center',
+    alignItems: "center",
   },
   buttonText: {
-    color: '#FFF',
-    fontWeight: 'bold',
+    color: "#FFF",
+    fontWeight: "bold",
   },
 });
 

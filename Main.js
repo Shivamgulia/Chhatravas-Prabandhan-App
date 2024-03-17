@@ -1,14 +1,14 @@
-import { StyleSheet, Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useContext, useEffect, useState } from 'react';
-import { AuthContext } from './src/store/authContext';
+import { StyleSheet, Text, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "./src/store/authContext";
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import AuthStack from './src/Stacks/AuthStack';
-import UserStack from './src/Stacks/UserStack';
-import Navbar from './src/components/Navbar/Navbar';
-import Loading from './src/components/UI/Loading';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import AuthStack from "./src/Stacks/AuthStack";
+import UserStack from "./src/Stacks/UserStack";
+import Navbar from "./src/components/Navbar/Navbar";
+import Loading from "./src/components/UI/Loading";
 
 const Stack = createNativeStackNavigator();
 
@@ -20,10 +20,10 @@ export default function Main() {
   useEffect(() => {
     setLoading(true);
     async function checkUser() {
-      const token = await AsyncStorage.getItem('token');
+      const token = await AsyncStorage.getItem("token");
       if (!!token) {
         setLoggedIn(true);
-        const user = await AsyncStorage.getItem('user');
+        const user = await AsyncStorage.getItem("user");
         const userObj = await JSON.parse(user);
         authCtx.setValues({ user: userObj, token });
       }
@@ -62,9 +62,9 @@ export default function Main() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
   navbar: {
     flex: 0,
@@ -76,3 +76,5 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+
+// "expo": "~50.0.13",
