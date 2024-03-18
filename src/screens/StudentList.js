@@ -1,12 +1,13 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { View, Text, Button, FlatList, StyleSheet, Alert } from 'react-native';
-import { AuthContext } from '../store/authContext';
-import Loading from '../components/UI/Loading';
+import React, { useEffect, useState, useContext } from "react";
+import { View, Text, Button, FlatList, StyleSheet, Alert } from "react-native";
+import { AuthContext } from "../store/authContext";
+import Loading from "../components/UI/Loading";
 
 function StudentList() {
   const authCtx = useContext(AuthContext);
 
   const [page, setPage] = useState(1);
+  const [pages, setPages] = useState(1);
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -20,26 +21,28 @@ function StudentList() {
       const hostel = await authCtx.user.hostel;
       if (authCtx.token) {
         const response = await fetch(
-          process.env.EXPO_PUBLIC_API_URL + '/api/v1/student',
+          process.env.EXPO_PUBLIC_API_URL + "/api/v1/student",
           {
-            method: 'POST',
+            method: "POST",
             headers: {
               authorization: `Bearer ${authCtx.token}`,
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({ page, hostel }),
           }
         );
 
         if (!response.ok) {
-          Alert.alert('Request Failed');
+          Alert.alert("Request Failed");
         } else {
           const data = await response.json();
           setStudents(data.students);
+          setPages(data.pages);
+          console.log(data);
         }
       }
     } catch (e) {
-      Alert.alert('Request Failed');
+      Alert.alert("Request Failed");
     }
     setLoading(false);
   }
@@ -67,20 +70,22 @@ function StudentList() {
           </View>
         )}
       />
-      <View style={styles.buttonsContainer}>
-        <Button
-          title='Prev'
-          onPress={() => {
-            if (page > 1) setPage(page - 1);
-          }}
-        />
-        <Button
-          title='Next'
-          onPress={() => {
-            setPage(page + 1);
-          }}
-        />
-      </View>
+      {pages > 1 && (
+        <View style={styles.buttonsContainer}>
+          <Button
+            title="Prev"
+            onPress={() => {
+              if (page > 1) setPage(page - 1);
+            }}
+          />
+          <Button
+            title="Next"
+            onPress={() => {
+              if (page < pages) setPage(page + 1);
+            }}
+          />
+        </View>
+      )}
     </View>
   );
 }
@@ -93,11 +98,11 @@ const styles = StyleSheet.create({
   itemContainer: {
     padding: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    borderBottomColor: "#ccc",
   },
   buttonsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginTop: 10,
   },
   loading: { flex: 1 },
