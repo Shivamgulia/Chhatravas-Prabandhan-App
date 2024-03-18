@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
-import MenuTable from '../components/Tables/MenuTable';
-import { AuthContext } from '../store/authContext';
-import Loading from '../components/UI/Loading';
+import React, { useContext, useEffect, useState } from "react";
+import { Alert, StyleSheet, View } from "react-native";
+import MenuTable from "../components/Tables/MenuTable";
+import { AuthContext } from "../store/authContext";
+import Loading from "../components/UI/Loading";
 
 const Menu = () => {
   const [menu, setMenu] = useState([]);
@@ -14,12 +14,12 @@ const Menu = () => {
     setLoading(true);
     try {
       const res = await fetch(
-        process.env.EXPO_PUBLIC_API_URL + '/api/v1/menu',
+        process.env.EXPO_PUBLIC_API_URL + "/api/v1/menu",
         {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
-            authorization: 'Bearer ' + authCtx.token,
+            "Content-Type": "application/json",
+            authorization: "Bearer " + authCtx.token,
           },
           body: JSON.stringify({ hostel: authCtx.user.hostel }),
         }
@@ -28,10 +28,10 @@ const Menu = () => {
         const data = await res.json();
         setMenu(data.menu);
       } else {
-        Alert.alert('Request Failed');
+        Alert.alert("Request Failed");
       }
     } catch (e) {
-      Alert.alert('Request Failed');
+      Alert.alert("Request Failed");
     }
     setLoading(false);
   }
@@ -49,7 +49,7 @@ const Menu = () => {
   }
 
   return (
-    <View>
+    <View style={styles.cont}>
       <MenuTable menu={menu} update={getMenu} />
     </View>
   );
@@ -57,6 +57,7 @@ const Menu = () => {
 
 const styles = StyleSheet.create({
   loading: { flex: 1 },
+  cont: { flex: 1, backgroundColor: "white" },
 });
 
 export default Menu;

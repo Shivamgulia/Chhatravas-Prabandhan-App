@@ -6,6 +6,7 @@ import {
   TextInput,
   StyleSheet,
   Pressable,
+  ScrollView,
 } from "react-native";
 
 import { Modal } from "react-native";
@@ -62,7 +63,7 @@ function MenuTable(props) {
   }
 
   return (
-    <ScrollView>
+    <ScrollView style={styles.scrollCont}>
       <View style={styles.cont}>
         <Modal visible={showModal} onRequestClose={closeModal}>
           <View style={styles.modalContainer}>
@@ -150,9 +151,11 @@ function MenuTable(props) {
 }
 
 const styles = StyleSheet.create({
+  scrollCont: {
+    flex: 1,
+  },
   cont: {
-    backgroundColor: "white",
-    height: "100%",
+    flex: 1,
   },
   modalContainer: {
     flex: 1,

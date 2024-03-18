@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -8,10 +8,10 @@ import {
   StyleSheet,
   Pressable,
   Alert,
-} from 'react-native';
-import { Modal } from 'react-native';
-import { AuthContext } from '../store/authContext';
-import Loading from '../components/UI/Loading';
+} from "react-native";
+import { Modal } from "react-native";
+import { AuthContext } from "../store/authContext";
+import Loading from "../components/UI/Loading";
 
 const EmployeeList = () => {
   const authCtx = useContext(AuthContext);
@@ -33,12 +33,12 @@ const EmployeeList = () => {
       const hostel = authCtx.user.hostel;
       if (authCtx.token) {
         const response = await fetch(
-          process.env.EXPO_PUBLIC_API_URL + '/api/v1/employee',
+          process.env.EXPO_PUBLIC_API_URL + "/api/v1/employee",
           {
-            method: 'POST',
+            method: "POST",
             headers: {
               authorization: `Bearer ${authCtx.token}`,
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({ page, hostel }),
           }
@@ -49,11 +49,11 @@ const EmployeeList = () => {
           setEmployees(data.employees);
           setPages(data.count);
         } else {
-          Alert.alert('request Failed');
+          Alert.alert("request Failed");
         }
       }
     } catch (e) {
-      Alert.alert('Request Failed');
+      Alert.alert("Request Failed");
     }
     setLoading(false);
   }
@@ -64,12 +64,12 @@ const EmployeeList = () => {
       const hostel = authCtx.user.hostel;
       const token = authCtx.token;
       const res = await fetch(
-        process.env.EXPO_PUBLIC_API_URL + '/api/v1/employee/create',
+        process.env.EXPO_PUBLIC_API_URL + "/api/v1/employee/create",
         {
-          method: 'POST',
+          method: "POST",
           headers: {
             authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({ name, job, hostel }),
         }
@@ -81,7 +81,7 @@ const EmployeeList = () => {
         setError(true);
       }
     } catch (e) {
-      Alert.alert('Request Failed');
+      Alert.alert("Request Failed");
     }
     setLoading(false);
   }
@@ -90,26 +90,26 @@ const EmployeeList = () => {
     const token = authCtx.token;
 
     Alert.alert(
-      'Delete Employee',
-      'Are you sure you want to delete this employee?',
+      "Delete Employee",
+      "Are you sure you want to delete this employee?",
       [
         {
-          text: 'Cancle',
+          text: "Cancle",
           onPress: () => {
-            Alert.alert('Employee delete aborted');
+            Alert.alert("Employee delete aborted");
           },
         },
         {
-          text: 'Ok',
+          text: "Ok",
           onPress: async () => {
             try {
               const res = await fetch(
-                process.env.EXPO_PUBLIC_API_URL + '/api/v1/employee',
+                process.env.EXPO_PUBLIC_API_URL + "/api/v1/employee",
                 {
-                  method: 'DELETE',
+                  method: "DELETE",
                   headers: {
                     authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
                   },
                   body: JSON.stringify({ id }),
                 }
@@ -117,13 +117,13 @@ const EmployeeList = () => {
               if (res.ok) {
                 getEmployees();
               } else {
-                Alert.alert('Delete Failed');
+                Alert.alert("Delete Failed");
               }
             } catch (e) {
-              Alert.alert('Request Failed');
+              Alert.alert("Request Failed");
             }
           },
-          style: 'cancel',
+          style: "cancel",
         },
       ]
     );
@@ -163,14 +163,14 @@ const EmployeeList = () => {
           </View>
           <View style={styles.modalbody}>
             <Text style={styles.error}>
-              {error && 'Unable to add Employee'}
+              {error && "Unable to add Employee"}
             </Text>
             <Text style={styles.head}>Add Employee</Text>
             <View style={styles.input}>
-              <TextInput placeholder='Name' />
+              <TextInput placeholder="Name" />
             </View>
             <View style={styles.input}>
-              <TextInput placeholder='Job' />
+              <TextInput placeholder="Job" />
             </View>
             <TouchableOpacity
               onPress={() => {
@@ -186,24 +186,34 @@ const EmployeeList = () => {
         </View>
       </Modal>
 
-      <FlatList
-        data={employees}
-        renderItem={({ item }) => (
-          <View style={styles.list}>
-            <Text style={styles.text}>{item.name}</Text>
-            <Text style={styles.text}>{item.job}</Text>
-            {authCtx.user?.rollno == 0 && (
-              <TouchableOpacity
-                onPress={() => deleteEmployee(item.id)}
-                style={styles.delete}
-              >
-                <Text>Delete</Text>
-              </TouchableOpacity>
-            )}
-          </View>
+      <View style={[styles.list, styles.listHead]}>
+        <Text style={[styles.text, styles.listHeadText]}>Name</Text>
+        <Text style={[styles.text, styles.listHeadText]}>Job Title</Text>
+        {authCtx.user?.rollno == 0 && (
+          <Text style={[styles.delete, styles.listHeadText]}>Delete</Text>
         )}
-        keyExtractor={(item) => item.id.toString()}
-      />
+      </View>
+
+      <View style={styles.flatlist}>
+        <FlatList
+          data={employees}
+          renderItem={({ item }) => (
+            <View style={styles.list}>
+              <Text style={styles.text}>{item.name}</Text>
+              <Text style={styles.text}>{item.job}</Text>
+              {authCtx.user?.rollno == 0 && (
+                <TouchableOpacity
+                  onPress={() => deleteEmployee(item.id)}
+                  style={styles.delete}
+                >
+                  <Text style={styles.deleteText}>Delete</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          )}
+          keyExtractor={(item) => item.id.toString()}
+        />
+      </View>
 
       {pages > 1 && (
         <View style={styles.pages}>
@@ -231,73 +241,90 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   addbutton: {
-    backgroundColor: '#3498db',
+    backgroundColor: "#3498db",
     padding: 10,
     borderRadius: 5,
     marginBottom: 20,
   },
   buttontext: {
-    color: '#fff',
-    textAlign: 'center',
+    color: "#fff",
+    textAlign: "center",
   },
   modalCont: {
     flex: 1,
-    paddingTop: '20%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    paddingTop: "20%",
+    justifyContent: "center",
+    alignItems: "center",
   },
   modalClose: {
-    position: 'absolute',
+    position: "absolute",
     top: 60,
     right: 20,
     marginRight: 10,
     marginTop: 10,
   },
   closeButton: {
-    color: 'red',
+    color: "red",
     fontSize: 20,
   },
   modalbody: {
     flex: 1,
-    marginTop: '20%',
-    width: '80%',
-    backgroundColor: '#fff',
+    marginTop: "20%",
+    width: "80%",
+    backgroundColor: "#fff",
     padding: 20,
     borderRadius: 10,
     elevation: 5,
   },
   error: {
-    color: 'red',
+    color: "red",
   },
   head: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
   },
   input: {
-    backgroundColor: '#f2f2f2',
+    backgroundColor: "#f2f2f2",
     padding: 10,
 
     marginBottom: 10,
     borderRadius: 5,
   },
   addButton: {
-    backgroundColor: '#3498db',
+    backgroundColor: "#3498db",
     padding: 10,
     borderRadius: 5,
     marginBottom: 10,
   },
   buttonText: {
-    color: '#fff',
-    textAlign: 'center',
+    color: "#fff",
+    textAlign: "center",
+  },
+  flatlist: {
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    borderBottomWidth: 1,
+    borderBottomLeftRadius: 10,
+    borderBottomEndRadius: 10,
+    borderColor: "#ddd",
   },
   list: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     borderBottomWidth: 1,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
     paddingVertical: 10,
+  },
+  listHead: {
+    backgroundColor: "#007bff",
+    borderTopLeftRadius: 10,
+    borderTopEndRadius: 10,
+  },
+  listHeadText: {
+    color: "#a9d6e5",
+    fontSize: 16,
   },
   text: {
     flex: 1,
@@ -306,19 +333,22 @@ const styles = StyleSheet.create({
   delete: {
     padding: 10,
   },
+  deleteText: {
+    color: "red",
+  },
   pages: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 20,
   },
   pagebutton: {
-    backgroundColor: '#3498db',
+    backgroundColor: "#3498db",
     padding: 10,
     borderRadius: 5,
     marginRight: 10,
   },
   pageText: {
-    color: '#fff',
-    textAlign: 'center',
+    color: "#fff",
+    textAlign: "center",
   },
   loading: {
     flex: 1,
