@@ -39,12 +39,14 @@ const SignUp = ({ navigation }) => {
       if (user.user.email.includes("hbtu.ac.in")) {
         setUserInfo(user.user);
         setError(null);
+        await GoogleSignin.signOut();
       } else {
         setError("User college email only");
+        await GoogleSignin.signOut();
       }
     } catch (e) {
       console.log("error", JSON.stringify(e));
-      setError("error" + JSON.stringify(e));
+      setError("Error Occured");
       console.log(statusCodes);
     }
   }
@@ -53,6 +55,7 @@ const SignUp = ({ navigation }) => {
     <View style={styles.cont}>
       {!userInfo && (
         <View style={styles.signupButton}>
+          <Text>{error}</Text>
           <GoogleSigninButton
             size={GoogleSigninButton.Size.Standard}
             color={GoogleSigninButton.Color.Light}
