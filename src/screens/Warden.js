@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View, Pressable } from 'react-native';
-import React from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { StyleSheet, Text, View, Pressable } from "react-native";
+import React from "react";
+import { useNavigation } from "@react-navigation/native";
 
 const Warden = () => {
   const navigation = useNavigation();
@@ -13,7 +13,7 @@ const Warden = () => {
         <Pressable
           style={styles.pressable}
           onPress={() => {
-            navigation.navigate('Maintenance List');
+            navigation.navigate("Maintenance List");
           }}
         >
           <Text style={styles.Text}>Maintanace List</Text>
@@ -21,7 +21,7 @@ const Warden = () => {
         <Pressable
           style={styles.pressable}
           onPress={() => {
-            navigation.navigate('Student List');
+            navigation.navigate("Student List");
           }}
         >
           <Text style={styles.Text}>StudentList</Text>
@@ -36,28 +36,28 @@ export default Warden;
 const styles = StyleSheet.create({
   cont: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   head: {
     marginBottom: 20,
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   buttons: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   pressable: {
     marginHorizontal: 10,
     paddingVertical: 10,
     paddingHorizontal: 20,
-    backgroundColor: '#3498db',
+    backgroundColor: "#3498db",
     borderRadius: 5,
   },
   Text: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
   },
 });

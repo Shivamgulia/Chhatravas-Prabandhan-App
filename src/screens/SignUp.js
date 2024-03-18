@@ -75,7 +75,6 @@ export default SignUp;
 const styles = StyleSheet.create({
   cont: {
     flex: 1,
-    paddingTop: "20%",
   },
   signupButton: {
     flex: 1,
