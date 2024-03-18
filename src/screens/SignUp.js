@@ -53,7 +53,6 @@ const SignUp = ({ navigation }) => {
     <View style={styles.cont}>
       {!userInfo && (
         <View style={styles.signupButton}>
-          <Text>{error}</Text>
           <GoogleSigninButton
             size={GoogleSigninButton.Size.Standard}
             color={GoogleSigninButton.Color.Light}
