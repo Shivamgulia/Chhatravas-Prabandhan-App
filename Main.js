@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "./src/store/authContext";
 
@@ -9,8 +9,6 @@ import AuthStack from "./src/Stacks/AuthStack";
 import UserStack from "./src/Stacks/UserStack";
 import Navbar from "./src/components/Navbar/Navbar";
 import Loading from "./src/components/UI/Loading";
-
-const Stack = createNativeStackNavigator();
 
 export default function Main() {
   const [loggedIn, setLoggedIn] = useState(false);

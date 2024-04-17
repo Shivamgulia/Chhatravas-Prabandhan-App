@@ -24,7 +24,15 @@ const Warden = () => {
             navigation.navigate("Student List");
           }}
         >
-          <Text style={styles.Text}>StudentList</Text>
+          <Text style={styles.Text}>Student List</Text>
+        </Pressable>
+        <Pressable
+          style={styles.pressable}
+          onPress={() => {
+            navigation.navigate("Leave List");
+          }}
+        >
+          <Text style={styles.Text}>Leave List</Text>
         </Pressable>
       </View>
     </View>

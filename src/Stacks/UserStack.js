@@ -13,6 +13,9 @@ import EmployeeList from "../screens/EmployeeList";
 import Menu from "../screens/Menu";
 import NewNotice from "../screens/NewNotice";
 import IconButton from "../components/UI/IconButton";
+import LeaveList from "../screens/LeaveList";
+import LeaveForm from "../screens/LeaveForm";
+import LeaveStatus from "../screens/LeaveStatus";
 
 const Stack = createNativeStackNavigator();
 
@@ -42,6 +45,9 @@ const UserStack = () => {
       <Stack.Screen name="Employee List" component={EmployeeList} />
       <Stack.Screen name="Menu" component={Menu} />
       <Stack.Screen name="NewNotice" component={NewNotice} />
+      <Stack.Screen name="Leave List" component={LeaveList} />
+      <Stack.Screen name="Leave Form" component={LeaveForm} />
+      <Stack.Screen name="Leave Status" component={LeaveStatus} />
     </Stack.Navigator>
   );
 };

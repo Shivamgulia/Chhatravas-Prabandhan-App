@@ -35,7 +35,7 @@ const SignUp = ({ navigation }) => {
       const hasplay = await GoogleSignin.hasPlayServices();
       console.log("hello1", hasplay);
       const user = await GoogleSignin.signIn();
-      console.log(user);
+
       if (user.user.email.includes("hbtu.ac.in")) {
         setUserInfo(user.user);
         setError(null);
