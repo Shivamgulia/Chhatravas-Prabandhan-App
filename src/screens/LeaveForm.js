@@ -7,6 +7,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { AuthContext } from "../store/authContext";
+import Loading from "../components/UI/Loading";
 
 function LeaveForm() {
   const authCtx = useContext(AuthContext);
@@ -16,13 +17,21 @@ function LeaveForm() {
   const [reason, setReason] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setName(authCtx.user.name);
-    setRollNo(authCtx.user.rollno);
+    if (authCtx.isLoggedIn) {
+      setName(authCtx.user.name);
+      setRollNo(authCtx.user.rollno);
+    }
   }, [authCtx]);
 
   async function submitionHandler() {
+    setLoading(true);
+    if (!authCtx.isLoggedIn) {
+      setLoading(false);
+      return;
+    }
     const formData = {
       name,
       rollno,
@@ -53,6 +62,15 @@ function LeaveForm() {
     } catch (e) {
       console.log(e);
     }
+    setLoading(false);
+  }
+
+  if (loading) {
+    return (
+      <View style={styles.loading}>
+        <Loading />
+      </View>
+    );
   }
 
   return (
@@ -136,5 +154,8 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#fff",
     fontSize: 16,
+  },
+  loading: {
+    flex: 1,
   },
 });

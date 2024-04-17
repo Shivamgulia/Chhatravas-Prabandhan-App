@@ -68,8 +68,10 @@ const NoticeBoard = () => {
   }
 
   useEffect(() => {
-    getData();
-  }, []);
+    if (authCtx.isLoggedIn) {
+      getData();
+    }
+  }, [authCtx]);
 
   function openModal(notice) {
     setNotice(notice);

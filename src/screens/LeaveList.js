@@ -10,6 +10,15 @@ import {
 } from "react-native";
 import { Modal } from "react-native";
 import { AuthContext } from "../store/authContext";
+import Loading from "../components/UI/Loading";
+// import { Picker } from "@react-native-picker/picker";
+import { Dropdown } from "react-native-element-dropdown";
+
+const data = [
+  { label: "Pending", value: "Pending" },
+  { label: "Approve", value: "Approved" },
+  { label: "Deny", value: "Denied" },
+];
 
 function LeaveList() {
   const authCtx = useContext(AuthContext);
@@ -19,12 +28,22 @@ function LeaveList() {
   const [leaves, setLeaves] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [leave, setLeave] = useState({});
+  const [status, setStatus] = useState("");
+  const [isFocus, setIsFocus] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getLeaves();
+    if (authCtx.isLoggedIn) {
+      getLeaves();
+    }
   }, [page]);
 
   async function getLeaves() {
+    setLoading(true);
+    if (!authCtx.isLoggedIn) {
+      setLoading(false);
+      return;
+    }
     const hostel = authCtx.user.hostel;
     if (authCtx.token) {
       const response = await fetch(
@@ -46,9 +65,16 @@ function LeaveList() {
         setLeaves(data.leaves);
       }
     }
+    setLoading(false);
   }
 
   async function updateLeave(status) {
+    setLoading(true);
+    if (!authCtx.isLoggedIn) {
+      setLoading(false);
+      return;
+    }
+
     const reqObj = { id: leave.id, status };
 
     const res = await fetch(
@@ -64,10 +90,19 @@ function LeaveList() {
     );
     getLeaves();
     closeModal();
+    setLoading(false);
   }
 
   function closeModal() {
     setShowModal(false);
+  }
+
+  if (loading) {
+    return (
+      <View style={styles.loading}>
+        <Loading />
+      </View>
+    );
   }
 
   return (
@@ -81,16 +116,43 @@ function LeaveList() {
           </View>
           <View style={styles.modalContent}>
             <Text style={styles.modalText}>Leave</Text>
-            <View>
-              <Text>Applicant: {leave.applicant}</Text>
-              <Text>Reason: {leave.reason}</Text>
-              <Text>From: {leave.startdate}</Text>
-              <Text>To: {leave.enddate}</Text>
-              <Text>Status:</Text>
-              <TextInput
+            <View style={styles.data}>
+              <Text style={styles.modalinside}>Applicant:</Text>
+              <Text style={styles.modalinside}>{leave.applicant}</Text>
+              <Text style={styles.modalinside}>Reason: </Text>
+              <Text style={styles.modalinside}>{leave.reason}</Text>
+              <Text style={styles.modalinside}>From: </Text>
+              <Text style={styles.modalinside}>
+                {leave.startdate?.substr(0, 10)}
+              </Text>
+              <Text style={styles.modalinside}>To: </Text>
+              <Text style={styles.modalinside}>
+                {leave.enddate?.substr(0, 10)}
+              </Text>
+              <Text style={styles.modalinside}>Status:</Text>
+              {/* <TextInput
                 value={leave.status}
                 onChangeText={(status) => setLeave({ ...leave, status })}
                 style={styles.input}
+              /> */}
+              <Dropdown
+                style={[styles.dropdown, isFocus && { borderColor: "blue" }]}
+                placeholderStyle={styles.placeholderStyle}
+                inputSearchStyle={styles.inputSearchStyle}
+                iconStyle={styles.iconStyle}
+                data={data}
+                maxHeight={300}
+                labelField="label"
+                valueField="value"
+                placeholder={!isFocus ? "Select item" : "..."}
+                searchPlaceholder="Search..."
+                value={leave.status}
+                onFocus={() => setIsFocus(true)}
+                onBlur={() => setIsFocus(false)}
+                onChange={(item) => {
+                  setLeave({ ...leave, status: item.value });
+                  setIsFocus(false);
+                }}
               />
               <TouchableOpacity
                 onPress={() => updateLeave(leave.status)}
@@ -108,7 +170,9 @@ function LeaveList() {
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() => {
-              setLeave(item);
+              setLeave({
+                ...item,
+              });
               setShowModal(true);
             }}
           >
@@ -116,8 +180,12 @@ function LeaveList() {
               <Text style={styles.leaveItemText}>Name: {item.applicant}</Text>
               <Text style={styles.leaveItemText}>Roll No.: {item.rollno}</Text>
               <Text style={styles.leaveItemText}>Reason: {item.reason}</Text>
-              <Text style={styles.leaveItemText}>From: {item.startdate}</Text>
-              <Text style={styles.leaveItemText}>To: {item.enddate}</Text>
+              <Text style={styles.leaveItemText}>
+                From: {item.startdate.substring(0, 10)}
+              </Text>
+              <Text style={styles.leaveItemText}>
+                To: {item.enddate.substring(0, 10)}
+              </Text>
             </View>
           </TouchableOpacity>
         )}
@@ -166,7 +234,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   modalText: {
-    fontSize: 18,
+    fontSize: 30,
+    textAlign: "center",
     marginBottom: 10,
   },
   modalClose: {
@@ -202,5 +271,27 @@ const styles = StyleSheet.create({
   btnText: {
     color: "#fff",
     fontSize: 16,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+    backgroundColor: "#fff",
+    color: "#333",
+  },
+  loading: {
+    flex: 1,
+  },
+  data: {
+    flexWrap: "wrap",
+    gap: 10,
+  },
+  modalinside: {
+    fontSize: 18,
+  },
+  dropdown: {
+    fontSize: 18,
   },
 });

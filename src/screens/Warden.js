@@ -55,7 +55,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   buttons: {
-    flexDirection: "row",
+    // flexDirection: "row",
+    gap: 20,
   },
   pressable: {
     marginHorizontal: 10,
@@ -65,6 +66,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   Text: {
+    textAlign: "center",
     color: "#fff",
     fontSize: 16,
   },

@@ -12,6 +12,10 @@ function Maintainance() {
 
   async function fetchMaintainance() {
     setLoading(true);
+    if (!authCtx.isLoggedIn) {
+      setLoading(false);
+      return;
+    }
     try {
       const hostel = await authCtx.user.hostel;
       if (authCtx.token) {

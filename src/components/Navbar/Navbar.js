@@ -131,7 +131,7 @@ const Navbar = () => {
         >
           <IconButton
             icon="reader"
-            color={path === "Menu" ? "orange" : "black"}
+            color={path === "Leave Form" ? "orange" : "black"}
             size={24}
             onPress={() => {
               navigation.navigate("Leave Form");
@@ -149,7 +149,7 @@ const Navbar = () => {
         >
           <IconButton
             icon="newspaper"
-            color={path === "Menu" ? "orange" : "black"}
+            color={path === "Leave Status" ? "orange" : "black"}
             size={24}
             onPress={() => {
               navigation.navigate("Leave Status");

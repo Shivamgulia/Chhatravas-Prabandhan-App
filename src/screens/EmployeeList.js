@@ -24,11 +24,17 @@ const EmployeeList = () => {
   const [employees, setEmployees] = useState([]);
 
   useEffect(() => {
-    getEmployees();
+    if (authCtx.isLoggedIn) {
+      getEmployees();
+    }
   }, [page, authCtx]);
 
   async function getEmployees() {
     setLoading(true);
+    if (!authCtx.isLoggedIn) {
+      setLoading(false);
+      return;
+    }
     try {
       const hostel = authCtx.user.hostel;
       if (authCtx.token) {
@@ -60,6 +66,10 @@ const EmployeeList = () => {
 
   async function addEmployee(name, job) {
     setLoading(true);
+    if (!authCtx.isLoggedIn) {
+      setLoading(false);
+      return;
+    }
     try {
       const hostel = authCtx.user.hostel;
       const token = authCtx.token;
@@ -87,6 +97,11 @@ const EmployeeList = () => {
   }
 
   async function deleteEmployee(id) {
+    setLoading(true);
+    if (!authCtx.isLoggedIn) {
+      setLoading(false);
+      return;
+    }
     const token = authCtx.token;
 
     Alert.alert(
@@ -127,6 +142,7 @@ const EmployeeList = () => {
         },
       ]
     );
+    setLoading(false);
   }
 
   function openModal() {

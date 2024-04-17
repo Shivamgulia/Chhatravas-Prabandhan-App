@@ -12,11 +12,17 @@ function StudentList() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getStudents();
+    if (authCtx.isLoggedIn) {
+      getStudents();
+    }
   }, [page, authCtx]);
 
   async function getStudents() {
     setLoading(true);
+    if (!authCtx.isLoggedIn) {
+      setLoading(false);
+      return;
+    }
     try {
       const hostel = await authCtx.user.hostel;
       if (authCtx.token) {

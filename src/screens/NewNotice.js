@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState } from "react";
 import {
   View,
   Text,
@@ -8,26 +8,30 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
-} from 'react-native';
-import { AuthContext } from '../store/authContext';
+} from "react-native";
+import { AuthContext } from "../store/authContext";
 
 const Notice = () => {
   const authCtx = useContext(AuthContext);
-  const [head, setHead] = useState('');
-  const [details, setDetails] = useState('');
+  const [head, setHead] = useState("");
+  const [details, setDetails] = useState("");
   const [loading, setLoading] = useState(false);
 
   const submitionHandler = async () => {
     const noticeData = { head, details };
     setLoading(true);
+    if (!authCtx.isLoggedIn) {
+      setLoading(false);
+      return;
+    }
     try {
       const res = await fetch(
-        process.env.EXPO_PUBLIC_API_URL + '/api/v1/notices',
+        process.env.EXPO_PUBLIC_API_URL + "/api/v1/notices",
         {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
-            authorization: 'Bearer ' + authCtx.token,
+            "Content-Type": "application/json",
+            authorization: "Bearer " + authCtx.token,
           },
           body: JSON.stringify(noticeData),
         }
@@ -35,24 +39,24 @@ const Notice = () => {
 
       if (res.ok) {
         const data = await res.json();
-        Alert.alert('Notice added successfully');
+        Alert.alert("Notice added successfully");
       } else {
-        Alert.alert('Error', 'Failed to add notice');
+        Alert.alert("Error", "Failed to add notice");
       }
     } catch (error) {
-      Alert.alert('Error', 'An unexpected error occurred');
+      Alert.alert("Error", "An unexpected error occurred");
     }
     setLoading(false);
   };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <KeyboardAvoidingView behavior='padding' style={styles.container}>
+      <KeyboardAvoidingView behavior="padding" style={styles.container}>
         <Text style={styles.formHead}>Notice</Text>
         <View style={styles.inputDiv}>
           <TextInput
             style={styles.input}
-            placeholder='Heading'
+            placeholder="Heading"
             onChangeText={setHead}
             value={head}
           />
@@ -60,7 +64,7 @@ const Notice = () => {
         <View style={styles.inputDiv}>
           <TextInput
             style={[styles.input, { height: 100 }]}
-            placeholder='Details'
+            placeholder="Details"
             onChangeText={setDetails}
             value={details}
             multiline
@@ -77,8 +81,8 @@ const Notice = () => {
 const styles = {
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     paddingHorizontal: 20,
   },
   formHead: {
@@ -86,25 +90,25 @@ const styles = {
     marginBottom: 20,
   },
   inputDiv: {
-    width: '100%',
+    width: "100%",
     marginBottom: 20,
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderRadius: 5,
     paddingHorizontal: 10,
     paddingVertical: 8,
     fontSize: 16,
   },
   button: {
-    backgroundColor: 'blue',
+    backgroundColor: "blue",
     borderRadius: 5,
     paddingHorizontal: 20,
     paddingVertical: 10,
   },
   buttonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 18,
   },
 };

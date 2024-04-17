@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,33 +8,37 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
-} from 'react-native';
-import { AuthContext } from '../store/authContext';
-import Loading from '../components/UI/Loading';
+} from "react-native";
+import { AuthContext } from "../store/authContext";
+import Loading from "../components/UI/Loading";
 
 function RaiseIssue() {
   const authCtx = useContext(AuthContext);
 
   const [roomNo, setRoomNo] = useState(
-    authCtx?.user?.room ? authCtx?.user?.room.toString() : '0'
+    authCtx?.user?.room ? authCtx?.user?.room.toString() : "0"
   );
   const [raiser, setRaiser] = useState(authCtx?.user?.name);
-  const [description, setDescription] = useState('');
-  const [issue, setIssue] = useState('');
+  const [description, setDescription] = useState("");
+  const [issue, setIssue] = useState("");
   const [hostel, setHostel] = useState(authCtx?.user?.hostel);
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit() {
-    if (issue.replace(' ', '') != '' && description.replace(' ', '') != '') {
+    if (issue.replace(" ", "") != "" && description.replace(" ", "") != "") {
       setLoading(true);
+      if (!authCtx.isLoggedIn) {
+        setLoading(false);
+        return;
+      }
       try {
         const res = await fetch(
-          process.env.EXPO_PUBLIC_API_URL + '/api/v1/maintainance/raise',
+          process.env.EXPO_PUBLIC_API_URL + "/api/v1/maintainance/raise",
           {
-            method: 'POST',
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
-              authorization: 'Bearer ' + authCtx.token,
+              "Content-Type": "application/json",
+              authorization: "Bearer " + authCtx.token,
             },
             body: JSON.stringify({
               roomNo,
@@ -47,15 +51,17 @@ function RaiseIssue() {
         );
         const data = await res.json();
       } catch (e) {
-        Alert.alert('Request Failed');
+        Alert.alert("Request Failed");
       }
       setLoading(false);
     }
   }
 
   useEffect(() => {
-    setRoomNo(authCtx?.user?.room ? authCtx?.user?.room.toString() : '0');
-    setRaiser(authCtx?.user?.name);
+    if (authCtx.isLoggedIn) {
+      setRoomNo(authCtx?.user?.room ? authCtx?.user?.room.toString() : "0");
+      setRaiser(authCtx?.user?.name);
+    }
   }, [authCtx.user]);
 
   if (loading) {
@@ -70,7 +76,7 @@ function RaiseIssue() {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <Text style={styles.heading}>Raise Issue</Text>
-        <KeyboardAvoidingView behavior='padding' style={styles.container1}>
+        <KeyboardAvoidingView behavior="padding" style={styles.container1}>
           <View style={styles.form}>
             <View style={styles.inputDiv}>
               <Text style={styles.label}>Room No</Text>
@@ -110,23 +116,23 @@ function RaiseIssue() {
 const styles = StyleSheet.create({
   container1: {
     flex: 1,
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
   },
   container: {
     flex: 1,
-    width: '100%',
-    alignItems: 'center',
+    width: "100%",
+    alignItems: "center",
   },
   heading: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 20,
   },
   form: {
     flex: 1,
-    width: '60%',
+    width: "60%",
   },
   inputDiv: {
     marginBottom: 10,
@@ -134,23 +140,23 @@ const styles = StyleSheet.create({
   label: {
     marginBottom: 5,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     paddingVertical: 10,
     paddingHorizontal: 10,
     borderRadius: 5,
-    width: '100%',
+    width: "100%",
   },
   button: {
-    backgroundColor: '#3498db',
+    backgroundColor: "#3498db",
     paddingVertical: 15,
     paddingHorizontal: 20,
     borderRadius: 5,
     marginTop: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   loading: {
     flex: 1,

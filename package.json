@@ -17,13 +17,14 @@
     "expo-crypto": "~12.8.1",
     "expo-dev-client": "~3.3.10",
     "expo-status-bar": "~1.11.1",
+    "expo-web-browser": "~12.8.2",
     "react": "18.2.0",
     "react-native": "0.73.5",
     "react-native-dotenv": "^3.4.11",
+    "react-native-element-dropdown": "^2.10.4",
     "react-native-safe-area-context": "4.8.2",
     "react-native-screens": "~3.29.0",
-    "vector-icons": "^0.1.0",
-    "expo-web-browser": "~12.8.2"
+    "vector-icons": "^0.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

@@ -12,6 +12,10 @@ const Menu = () => {
 
   async function getMenu() {
     setLoading(true);
+    if (!authCtx.isLoggedIn) {
+      setLoading(false);
+      return;
+    }
     try {
       const res = await fetch(
         process.env.EXPO_PUBLIC_API_URL + "/api/v1/menu",
@@ -37,7 +41,9 @@ const Menu = () => {
   }
 
   useEffect(() => {
-    getMenu();
+    if (authCtx.isLoggedIn) {
+      getMenu();
+    }
   }, [authCtx]);
 
   if (loading) {
