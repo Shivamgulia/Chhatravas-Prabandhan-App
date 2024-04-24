@@ -162,8 +162,10 @@ const NoticeBoard = () => {
           <View style={styles.emergency}>
             <Text style={styles.emergencyhead}>Emergency Numbers</Text>
             <View style={styles.emergencylist}>
-              <Text style={styles.emergencyitem}>Police: 100</Text>
-              <Text style={styles.emergencyitem}>Ambulance: 102</Text>
+              <Text style={styles.emergencyitem}>Police: 112</Text>
+              <Text style={styles.emergencyitem}>
+                HBTU Ambulance: 8400366259
+              </Text>
             </View>
           </View>
         </View>
